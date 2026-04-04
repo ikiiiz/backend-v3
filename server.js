@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 
 // 🔹 بحث
 app.get("/search", (req, res) => {
-  const query = req.query.q;
+  const query = (req.query.q || "").trim();
 
   // بيانات تجريبية (بدلها لاحقاً من مواقع حقيقية)
   const products = [
