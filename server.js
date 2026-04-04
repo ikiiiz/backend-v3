@@ -3,18 +3,17 @@ const cors = require("cors");
 
 const app = express();
 
-// middlewares
 app.use(cors());
 app.use(express.json());
 
-// test route
+// الصفحة الرئيسية
 app.get("/", (req, res) => {
   res.send("API is running 🚀");
 });
 
-// search route
+// البحث
 app.get("/search", (req, res) => {
-  const query = req.query.q;
+  const query = req.query.q || "منتج";
 
   const products = [
     {
@@ -31,5 +30,5 @@ app.get("/search", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running...");
 });
