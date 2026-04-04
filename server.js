@@ -1,34 +1,54 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
-app.use(helmet());
+// middlewares
 app.use(cors());
 app.use(express.json());
 
-const limiter = rateLimit({
-windowMs: 15 * 60 * 1000,
-max: 100
+// 🔹 API رئيسي
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
 });
 
-app.use(limiter);
+// 🔹 بحث
+app.get("/search", (req, res) => {
+  const query = req.query.q;
 
-app.get('/search', (req, res) => {
-const query = req.query.q;
+  // بيانات تجريبية (بدلها لاحقاً من مواقع حقيقية)
+  const products = [
+    {
+      name: "مكنسة كهربائية",
+      price: 300,
+      store: "Amazon",
+      image: "https://via.placeholder.com/150"
+    },
+    {
+      name: "مكنسة كهربائية",
+      price: 250,
+      store: "Noon",
+      image: "https://via.placeholder.com/150"
+    },
+    {
+      name: "مكنسة كهربائية",
+      price: 270,
+      store: "AliExpress",
+      image: "https://via.placeholder.com/150"
+    }
+  ];
 
-res.json({
-results: [
-{ name: "سماعة AirPods", price: "499 ريال" },
-{ name: "سماعة Sony", price: "799 ريال" },
-{ name: "سماعة Gaming", price: "299 ريال" }
-],
-search: query
+  // فلترة بسيطة
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(query.toLowerCase())
+  );
+
+  res.json(filtered);
 });
-});
 
-app.listen(3000, () => {
-console.log('Server running on http://localhost:3000');
+// 🔥 أهم جزء (PORT)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
